@@ -1,98 +1,255 @@
 # MT Gallery - 非官方 MT-Photos 安卓客户端
+
+<div align="center">
+
+<img src="docs/assets/banner.png" alt="MT Gallery Banner" width="100%" />
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)]()
-[![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack_Compose-orange.svg)]()
+[![Kotlin](https://img.shields.io/badge/Language-Kotlin_2.0-purple.svg)]()
+[![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack_Compose_M3-orange.svg)]()
+[![Media3](https://img.shields.io/badge/Video_Engine-Jetpack_Media3_Transformer-red.svg)]()
 
-`MT Gallery` 是一款针对个人照片管理系统 **[MT-Photos](https://mtmt.tech/)** 开发的非官方 Android 客户端。
+**Android 客户端 · 本地与云端混合时间线 · AI 回忆成片 · Studio 精修与 1080P 视频导出**
 
-本客户端旨在为您提供比网页版更为流畅、原生且功能丰富的移动端相册浏览体验，无缝打通本地相册与云端存储，并配备了强大的多媒体编辑与管理工具。
+</div>
+
+---
+
+> [!WARNING]
+> **免责声明**：本项目处于开发阶段，不建议作为日常唯一相册管理工具使用。使用者需自行承担可能遇到的软件错误或文件丢失风险。
+
+`MT Gallery` 是一款针对开源个人照片管理系统 **[MT-Photos](https://mtmt.tech/)** 开发的非官方 Android 客户端。
+
+项目基于现代 Android 技术栈（Jetpack Compose + Room + WorkManager + Jetpack Media3 Transformer）构建，主要实现本地媒体库与云端相册的整合展示、双向操作同步与后台静默备份，并提供基于多模态大模型的“一句话成片”、Studio 分镜精修及 1080P 硬件加速 MP4 视频导出等功能。
+
+---
+
+## 🎬 演示预览
+
+<div align="center">
+  <img src="docs/assets/memory_slideshow_demo.gif" width="720" alt="成片放映与视频导出演示" />
+  <p><i>放映演示：Ken Burns 运镜、分镜字幕浮层、画幅适配与 MP4 导出</i></p>
+  <p><a href="docs/assets/demo_slideshow.mp4">▶ 下载演示视频文件 (docs/assets/demo_slideshow.mp4)</a></p>
+</div>
+
+---
+
+## 📱 功能界面一览
+
+<div align="center">
+  <img src="docs/assets/feature_showcase.png" width="100%" alt="主要功能界面" />
+</div>
 
 ---
 
 ## 🌟 主要功能
 
-### 1. 本地与云端媒体混合显示 (Hybrid Timeline)
-* **增量扫描与去重**：后台自动扫描本地媒体库并拉取 MT-Photos 服务器时间线，通过比对文件 MD5 值进行去重，避免重复显示。
-* **统一时间线**：将本地与云端媒体整合在同一个瀑布流中展示，支持月/日视图缩放，并清晰标注 `LOCAL_ONLY`（仅本地）、`CLOUD_ONLY`（仅云端）与 `SYNCED`（已同步）状态。
-* **流畅的图片加载**：利用 Room 数据库缓存与 Coil 高性能加载框架，实现高效的列表滚动和首屏渲染。
+### 1. 本地与云端混合时间线 (Hybrid Timeline)
 
-### 2. Live Photos 与 动态照片支持
-* **嵌入式视频提取**：支持自动解析并提取 Google、三星等设备拍摄的嵌入式 JPEG 动态照片中的视频数据段。
-* **Sidecar 视频配对**：支持识别以同名或带有后缀（如 `_live`、`_motion` 等）命名的侧载配对视频。
-* **丝滑播放**：在大图浏览器中长按可流畅播放动态照片视频段，重现精彩瞬间。
-
-### 3. 多媒体编辑器 (Media Editor)
-* **图片编辑器 (Image Editor)**：
-  * **裁剪与旋转**：支持自由比例或预设比例（1:1, 4:3, 16:9 等）裁切，支持 90 度旋转、水平/垂直翻转以及度数级别的微调旋转。
-  * **色彩与光影参数微调**：可对亮度、对比度、饱和度、高光、阴影、锐化、清晰度、暖色调、色调等多维度进行精细调节。
-  * **艺术滤镜**：内置多款精美预设滤镜，长按可快速对比修改前后的视觉效果。
-  * **隐私马赛克**：支持自由划线马赛克遮罩，可按需调节画笔粗细与像素块大小。
-  * **画笔涂鸦**：提供不同色彩和粗细的自由手绘工具。
-  * **历史撤销**：具备多步骤的历史记录，支持撤销多步操作。
-* **视频编辑器 (Video Editor)**：
-  * **时长剪辑 (Trim)**：支持通过精确的时间轴滑块裁剪视频的开始和结束点。
-  * **变速播放 (Speed)**：支持调整视频播放的倍速。
-  * **画面尺寸裁切 (Crop)**：支持针对多种画幅比例的画面局部裁剪。
-  * **滤镜与配乐**：支持应用视频滤镜，支持消除原声并添加自定义背景音乐，可从公有云端下载丰富的背景配乐。
-
-### 4. DLNA 投屏服务 (DLNA Casting)
-* **大屏分享**：支持通过 DLNA 协议，一键将本地或云端的照片与视频投射到智能电视或显示器上。
-* **投屏遥控器**：投屏时提供移动端控制面板，支持暂停/播放、调节播放进度与音量等。
-
-### 5. 地图足迹 (Geotagged Photo Map)
-* **空间数据聚合**：自动读取并解析带有地理位置信息的媒体文件，将其坐标记录在本地数据库中。
-* **足迹地图分布**：在内置地图上标注所有媒体的拍摄位置，支持随着地图缩放自动进行标记聚合，方便通过地理足迹回忆旅程。
-
-### 6. 后台自动备份与同步 (Background Sync & Backup)
-* **后台智能调度**：基于 WorkManager，可在满足特定条件（如连接 Wi-Fi、设备充电中、设备空闲等）时自动以分块流式上传未备份文件。
-* **备份修复功能**：支持“扫描并修复漏传文件”选项，自动检索并重新上传任何同步失败或缺失的媒体文件。
-* **状态通知**：提供系统前台通知展示备份状态、当前文件名及总进度。
-
-### 7. 双向同步与操作任务队列 (Offline Operation Queue)
-* **多端同步销毁**：支持在删除媒体文件时，同时向服务器发送删除请求并移除本地原图。
-* **离线操作队列**：在断网或弱网环境下，您对云端的管理操作（如删除、收藏、隐藏、重命名人物等）会缓存在本地 Room 队列中，待网络恢复后通过退避策略自动重试。
-* **任务合并去重**：队列执行前自动合并冲突任务（例如短时间内重复收藏与取消），最大化节省网络资源。
-
-### 8. 私密相册与安全解锁 (Private Album)
-* **隐私媒体隐藏**：支持将敏感照片或视频放入私密相册中（向云端发送隐藏请求，并在本地限制显示）。
-* **安全解锁机制**：进入私密相册时需通过手势图案 (Pattern) 或 PIN 码进行解锁，确保本地浏览的数据安全。
-
-### 9. 存储空间优化与缓存管理 (Storage & Cache)
-* **本地原图释放**：一键清理本地已成功备份 (`SYNCED`) 的原始媒体文件，释放宝贵的手机存储空间。
-* **保留本地预览**：原图释放后，本地依然保留元数据和轻量级缓存缩略图，在离线状态下依然可以流畅进行日常浏览。
-* **高级缓存限制**：支持设置独立的缩略图缓存大小上限，支持一键清除缩略图缓存与大图/视频缓存。
-
----
-
-## 🚀 下载与安装
-
-请前往 **[Releases](https://github.com/kqstone/mt_gallery_release/releases)** 页面下载最新编译生成的公测版 APK 文件进行安装。
-
-### 环境要求
-* **Android 8.0 (API 26)** 及以上系统版本的 Android 智能手机或平板设备。
-
----
-
-## 👥 作者
-
-* **kqstone**
-
----
-
-## ☕ Buy me a coffee / 赞助支持
-
-如果您觉得这个项目对您有帮助，欢迎请作者喝杯咖啡！您的支持是作者持续维护和更新项目的最大动力。
+* **增量扫描与 MD5 去重**：后台自动扫描本地媒体库 (`MediaStore`) 并拉取 MT-Photos 服务器元数据，通过比对文件 MD5 值去重，避免重复展示。
+* **三种同步状态标识**：
+  * `LOCAL_ONLY`：仅存在于本地设备，尚未备份至云端。
+  * `CLOUD_ONLY`：已同步至云端，本地原图已被清理或不存在。
+  * `SYNCED`：本地与云端均存在对应文件（MD5 一致）。
+* **离线操作队列 (`server_op_tasks`)**：
+  * 对云端的操作（如删除、收藏、添加标签、隐藏等）在本地 Room 数据库中排队持久化。
+  * 当网络恢复后通过退避策略自动重试，并自动合并短时间内的冲突或重复操作任务。
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/kqstone/mt_gallery_release/main/docs/alipay_qr.jpg" width="280" alt="支付宝扫码支持" />
-  <p><b>支付宝扫码支持</b></p>
+  <img src="docs/assets/timeline_sync_demo.png" width="380" alt="混合时间线与同步状态" />
+  <p><i>混合时间线：三态角标标识、服务器连接状态与瀑布流</i></p>
 </div>
 
 ---
 
-## 📜 免责声明与开源协议
+### 2. 一句话成片 (AI Memories)
 
-本项目采用 **[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)** 开源协议。
+* **多模态视觉识图与文案生成**：
+  * 配合 `mtphotos_sidecar` 增强服务，提取照片轻量 `s260` 缩略图送入多模态大模型（兼容 GPT-4o、Gemini 等接口）；
+  * 模型根据画面内容与拍摄信息生成故事分镜、单镜标题与副标题，并自动推荐海报封面。
+* **风格模板与灵感词**：
+  * 内置电影感回顾、温暖家书、旅行手记、极简诗意等风格模板；
+  * 提供露营、旅行、生日、萌宠等常用灵感词辅助输入。
+* **分镜偏好设置**：
+  * 支持从人物聚类标签中勾选主角；
+  * 支持限定时间范围（如近1个月、近1年或全部）；
+  * 提供时长节奏档位（快闪 15s / 叙事 30s / 深度 60s）。
+* **实况照片与离线兜底**：
+  * 支持提取实况照片（Motion Photo）短视频片段混剪；
+  * 未配置大模型或网络不可用时，自动回退到基于元数据与本地 CLIP 向量的规则检索模式。
 
-* 本项目属于第三方开源客户端，与 MT-Photos 官方团队无商业关联或直接隶属关系。
-* **重要提醒：本客户端处于开发与测试阶段，不建议作为日常唯一相册管理工具使用。使用者需自行承担可能遇到的软件错误或文件丢失风险。**
+<div align="center">
+  <img src="docs/assets/prompt_memory_demo.png" width="380" alt="一句话成片与分镜偏好设置" />
+  <p><i>一句话成片：灵感推荐、风格模板与分镜偏好设置</i></p>
+</div>
+
+---
+
+### 3. MT Studio 精修工作台与视频导出
+
+* **胶卷分镜轨道 (Filmstrip)**：
+  * 放映时可从底部展开精修面板，查看候选分镜序列；
+  * 支持调整镜头顺序（前移/后移）、删除不满意片段。
+* **字幕二次编辑**：支持直接修改成片标题、副标题引导语及单个分镜字幕。
+* **多比例画幅切换**：支持 9:16（竖屏）、16:9（横屏）、1:1（方图）三档比例切换，并做主体居中适配。
+* **背景音乐工坊**：内置电影感、温情、旅行、舒缓等多风格背景音乐，支持试听与末尾平滑淡出。
+* **Media3 硬件加速 MP4 导出**：
+  * 基于 Jetpack Media3 Transformer 与 OpenGL ES 纹理渲染管线；
+  * 将 Ken Burns 运镜动效、交叉淡化转场、字幕贴纸与音频离线合成；
+  * 导出标准 1080P MP4 视频保存至系统相册，并支持调用系统分享面板。
+
+<div align="center">
+  <img src="docs/assets/studio_editor_demo.png" width="380" alt="MT Studio 成片精修工作台" />
+  <p><i>MT Studio 精修工作台：画幅切换、标题修改、BGM 与分镜重排</i></p>
+</div>
+
+---
+
+### 4. 捐赠版功能说明 (Donation Edition)
+
+为了支持项目的持续开发与维护，部分进阶功能纳入捐赠版：
+
+* **捐赠版包含功能**：
+  * 一句话成片故事生成；
+  * MT Studio 精修与 MP4 视频导出；
+  * 独立的图片与视频编辑器（裁剪旋转、OpenGL 调色与视频剪辑）。
+* **激活与状态维护**：
+  * 赞助方式：支付宝扫码支持 10 元；
+  * 激活流程：应用内自动生成设备机器码，上传付款凭据后后台审核激活；
+  * 应用每 12 小时自动校验认证状态，重新安装应用后会自动恢复已激活状态。
+
+<div align="center">
+  <img src="docs/assets/donation_pro_demo.png" width="380" alt="捐赠版认证与特权解锁" />
+  <p><i>高级功能认证中心：机器码绑定、凭证上传与状态恢复</i></p>
+</div>
+
+---
+
+### 5. 后台自动备份与存储释放
+
+* **WorkManager 后台任务调度**：
+  * `SyncWorker`：监听本地相册变动，增量同步元数据；
+  * `BackupWorker`：在满足设定条件（连接 Wi-Fi、设备充电中、系统空闲等）时后台流式上传 `LOCAL_ONLY` 媒体文件。
+* **本地原图释放**：识别状态为 `SYNCED`（已成功备份）的本地媒体，允许清理原图以释放存储空间，同时保留 Room 本地元数据与缩略图离线浏览。
+
+---
+
+### 6. 探索发现与隐私保护
+
+* **年度回顾海报**：扁平化年度海报展示，叠加 6 栏月份热力分布，支持以幻灯片形式播放年度回忆。
+* **分类与地图足迹**：同步 MT-Photos 的人脸聚类与场景标签，地图模式解析 GPS 坐标并按视野聚合展示。
+* **私密相册**：支持将敏感照片/视频放入隐藏相册，进入需通过手势图案或 PIN 码解锁。
+
+---
+
+## 🐳 Sidecar 辅助服务部署及使用方法
+
+`mtphotos_sidecar` 是专为 MT Gallery 设计的可选辅助后端服务（基于 FastAPI + 嵌入式 PostgreSQL + Caddy 反代集成）。
+
+### 1. Sidecar 的作用
+* **AI 一句话成片与多模态识图**：接收客户端提交的成片需求，并发拉取 MT-Photos 媒体缩略图（`s260`）并调用多模态大模型（兼容 OpenAI 规范）识图生成分镜文案与海报封面推荐；在无模型或调用异常时自动回退到规则与本地 CLIP 向量选片模式。
+* **增量同步加速**：内嵌数据库记录媒体库变更日志（changelog），配合客户端实现快速云端增量同步。
+* **可选透明代理**：内置 Caddy 反向代理，可将客户端对非 `/sync` 和非 `/admin` 的请求直接转发给 MT-Photos 服务器。
+
+### 2. 准备环境变量 (.env)
+部署目录位于仓库中的 [`mtphotos_sidecar/`](mtphotos_sidecar/)。复制配置样例文件：
+```bash
+cd mtphotos_sidecar
+cp .env.example .env
+```
+
+根据环境编辑 `.env` 中的核心变量（参考 [`.env.example`](mtphotos_sidecar/.env.example)）：
+```ini
+# 对外访问端口（默认 8061）
+PORT=8061
+
+# MT-Photos 服务器完整地址（供 Sidecar 内部拉取缩略图及反向代理）
+# 如两者在同一宿主机且均使用 Docker，可使用 http://host.docker.internal:8063
+# 局域网其他设备可使用如 http://192.168.1.100:8063
+MT_PHOTOS_URL=http://192.168.1.100:8063
+
+# 管理员密码（用于登录 Web 管理面板 /admin）
+ADMIN_PWD=your-admin-password
+
+# Web 会话密钥（修改为任意随机字符串）
+SESSION_SECRET=your-random-session-secret
+
+# 内嵌 PostgreSQL 数据库密码（数据目录挂载于 ./data）
+POSTGRES_PASSWORD=your-secure-db-password
+
+# 内嵌数据库开关（默认 1，单容器内置运行 Postgres）
+EMBEDDED_POSTGRES=1
+```
+
+### 3. Docker Compose 部署运行
+仓库已提供单容器编排文件 [`docker-compose.yml`](mtphotos_sidecar/docker-compose.yml)（单容器内置 Supervisord 协同管理 Postgres、Uvicorn 与 Caddy）：
+
+* **使用预构建镜像部署（推荐）**：
+  ```bash
+  docker compose up -d
+  ```
+  *(镜像地址为 `ghcr.io/kqstone/mt-gallery-sidecar:latest`；发版时该 compose 文件与 sample env 也会同步发布至 GitHub Release 资产中)*
+* **或通过源码直接构建**：
+  ```bash
+  docker compose up -d --build
+  ```
+* **检查运行状态**：
+  ```bash
+  docker compose ps
+  # 验证健康检查接口
+  curl -fsS http://127.0.0.1:8061/sync/health
+  ```
+
+### 4. 客户端连接与大模型配置
+1. **客户端连接**：
+   * 在 Android 客户端打开「设置」->「MT-Photos 增强组件」；
+   * 开启「启用增强组件服务器」；
+   * 填写 Sidecar 访问地址（例如 `http://192.168.1.100:8061`），点击「测试连接」并完成账号注册。
+2. **配置多模态大模型**：
+   * 使用浏览器访问 Sidecar 管理页面：`http://<Sidecar-IP>:8061/admin`；
+   * 输入 `.env` 中设置的 `ADMIN_PWD` 密码登录；
+   * 在「LLM 配置」中填入：
+     * **API Base**：兼容 OpenAI 的大模型 API 地址（如官方地址或自建反代）；
+     * **API Key**：对应 API 密钥；
+     * **Model**：模型名称（推荐填入支持多模态识图的模型，如 `gpt-4o`、`gemini-2.0-flash` 等）；
+   * 保存配置后，即可在客户端「发现」->「回忆」中体验“一句话成片”。
+
+### 5. 常见注意点
+* **网络连通性**：
+  * Sidecar 需要能够稳定访问 `MT_PHOTOS_URL`；
+  * 手机客户端需要能够直接访问 Sidecar 映射的 `PORT` 端口（局域网直连或通过 VPN/Tailscale 等远程连通）。
+* **模型多模态能力识别**：
+  * 模型名称命中 `4o`、`gemini`、`claude`、`vl`、`vision` 等关键字时，Sidecar 会自动启用低分辨率缩略图识图通道；若模型不支持图像或调用出错，系统会自动降级回退至纯文本元数据与规则模式，保证成片不中断。
+* **数据持久化**：
+  * 数据库文件持久化保存在 `./data` 目录中，容器重启或重建不会丢失配置与同步日志；请保证该目录具备读写权限。
+
+---
+
+## ☕ 赞助支持 (Buy me a coffee)
+
+如果您觉得 `MT Gallery` 对您有所帮助，欢迎赞助支持独立开发。捐赠 10 元可解锁捐赠版全部高级功能。
+
+<div align="center">
+  <img src="docs/alipay_qr.jpg" width="280" alt="支付宝扫码支持" />
+  <p><b>支付宝扫码支持（10元解锁捐赠版）</b></p>
+  <p><i>付款后可在客户端“关于 -> 高级功能”中提交凭证，审核通过后激活</i></p>
+</div>
+
+---
+
+## 👥 作者与致谢
+
+* **作者**：[kqstone](https://github.com/kqstone)
+* **致谢**：
+  * [MT-Photos](https://mtmt.tech/) 服务端
+  * 部分代码及方案由 **Claude Code** 与大语言模型辅助重构优化
+
+---
+
+## 📜 开源协议
+
+本项目基于 **[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)** 开源协议发布。
+
+* 本项目为第三方开源客户端，与 MT-Photos 官方团队无商业关联或直接隶属关系；
+* 允许学习、修改或二次开发，请保留原作者的版权声明及许可协议。
